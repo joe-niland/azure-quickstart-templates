@@ -61,42 +61,40 @@
         "[concat(variables('scriptsBaseUrl'), 'salt-install.sh')]"
       ],
       "commandToExecute": "sudo bash salt-install.sh"
-    },
+    }
   },
-  "resources": [
-    { 
-     "apiVersion": "[variables('apiVersion')]", 
-     "name": "[concat(parameters('vmName'), copyindex(), '/createVM')]", 
-     "type": "Microsoft.Resources/deployments", 
-     "properties": { 
-       "mode": "incremental", 
-       "templateLink": {
-          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json",
-          "contentVersion": "1.0.0.0"
-       },
-       "parametersLink": { 
-          "uri":"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.parameters.json",
-          "contentVersion":"1.0.0.0"
-       }
-       } 
-    },
-    {
-      "apiVersion": "[variables('apiVersion')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'), copyindex(), '/configureAppVM')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[concat(parameters('vmName'), copyindex(), '/createVM')]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
-        "settings": {
-          "fileUris": "[variables('appVMScripts').fileUris]",
-          "commandToExecute": "[variables('appVMScripts').commandToExecute]"
-        }
+  "resources": [{
+    "apiVersion": "[variables('apiVersion')]",
+    "name": "[concat(parameters('vmName'), copyindex(), '/createVM')]",
+    "type": "Microsoft.Resources/deployments",
+    "properties": {
+      "mode": "incremental",
+      "templateLink": {
+        "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json",
+        "contentVersion": "1.0.0.0"
+      },
+      "parametersLink": {
+        "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.parameters.json",
+        "contentVersion": "1.0.0.0"
       }
     }
-  ]
+  }, 
+  {
+    "apiVersion": "[variables('apiVersion')]",
+    "type": "Microsoft.Compute/virtualMachines/extensions",
+    "name": "[concat(parameters('vmName'), copyindex(), '/configureAppVM')]",
+    "location": "[variables('location')]",
+    "dependsOn": [
+      "[concat(parameters('vmName'), copyindex(), '/createVM')]"
+    ],
+    "properties": {
+      "publisher": "Microsoft.OSTCExtensions",
+      "type": "CustomScriptForLinux",
+      "typeHandlerVersion": "1.4",
+      "settings": {
+        "fileUris": "[variables('appVMScripts').fileUris]",
+        "commandToExecute": "[variables('appVMScripts').commandToExecute]"
+      }
+    }
+  }]
 }
