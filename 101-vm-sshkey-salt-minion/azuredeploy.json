@@ -65,7 +65,7 @@
   },
   "resources": [{
     "apiVersion": "[variables('apiVersion')]",
-    "name": "[concat(parameters('vmName'), copyindex(), '/createVM')]",
+    "name": "[concat(parameters('vmName'), '/createVM')]",
     "type": "Microsoft.Resources/deployments",
     "properties": {
       "mode": "incremental",
@@ -85,7 +85,7 @@
     "name": "[concat(parameters('vmName'), copyindex(), '/configureAppVM')]",
     "location": "[variables('location')]",
     "dependsOn": [
-      "[concat(parameters('vmName'), copyindex(), '/createVM')]"
+      "[concat(parameters('vmName'), '/createVM')]"
     ],
     "properties": {
       "publisher": "Microsoft.OSTCExtensions",
