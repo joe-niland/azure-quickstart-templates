@@ -85,7 +85,7 @@
     "name": "[concat(parameters('vmName'), '/configureAppVM')]",
     "location": "[variables('location')]",
     "dependsOn": [
-      "[concat(parameters('vmName'), '/createVM')]"
+      "[parameters('vmName')]"
     ],
     "properties": {
       "publisher": "Microsoft.OSTCExtensions",
