@@ -76,10 +76,29 @@
       "parametersLink": {
         "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.parameters.json",
         "contentVersion": "1.0.0.0"
+      },
+      "parameters": {
+        "adminUsername": {
+          "value": "[parameters('adminUsername')]"
+        },
+        "dnsLabelPrefix": {
+          "value": "[parameters('dnsLabelPrefix')]"
+        },
+        "saltVersion": {
+          "value": "[parameters('saltVersion')]"
+        },
+        "sshKeyData": {
+          "value": "[parameters('sshKeyData')]"
+        },
+        "vmSize": {
+          "value": "[parameters('vmSize')]"
+        },
+        "vmName": {
+          "value": "[parameters('vmName')]"
+        }
       }
     }
-  }, 
-  {
+  }, {
     "apiVersion": "[variables('apiVersion')]",
     "type": "Microsoft.Compute/virtualMachines/extensions",
     "name": "[concat(parameters('vmName'), '/configureAppVM')]",
