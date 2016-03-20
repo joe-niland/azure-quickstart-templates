@@ -1,0 +1,102 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "sshKeyData": {
+      "type": "string",
+      "metadata": {
+        "description": "SSH rsa public key file as a string."
+      }
+    },
+    "dnsLabelPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "saltVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Salt release version to deploy."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_A2",
+      "metadata": {
+        "description": "Size of the VM"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the VM"
+      }
+    },
+    "ubuntuOSVersion": {
+      "type": "string",
+      "defaultValue": "14.04.2-LTS",
+      "allowedValues": [
+        "12.04.5-LTS",
+        "14.04.2-LTS",
+        "15.10"
+      ],
+      "metadata": {
+        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.10."
+      }
+    }
+  },
+  "variables": {
+    "scriptsBaseUrl": "https://raw.githubusercontent.com/joe-niland/azure-quickstart-templates/master/101-vm-sshkey-salt-minion/",
+    "apiVersion": "2015-06-15",
+    "location": "[resourceGroup().location]",
+    "appVMScripts": {
+      "fileUris": [
+        "[concat(variables('scriptsBaseUrl'), 'salt-install.sh')]"
+      ],
+      "commandToExecute": "sudo bash salt-install.sh"
+    },
+  },
+  "resources": [
+    { 
+     "apiVersion": "[variables('apiVersion')]", 
+     "name": "[concat(parameters('vmName'), copyindex(), '/createVM')]", 
+     "type": "Microsoft.Resources/deployments", 
+     "properties": { 
+       "mode": "incremental", 
+       "templateLink": {
+          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json",
+          "contentVersion": "1.0.0.0"
+       },
+       "parametersLink": { 
+          "uri":"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.parameters.json",
+          "contentVersion":"1.0.0.0"
+       }
+       } 
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'), copyindex(), '/configureAppVM')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat(parameters('vmName'), copyindex(), '/createVM')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.4",
+        "settings": {
+          "fileUris": "[variables('appVMScripts').fileUris]",
+          "commandToExecute": "[variables('appVMScripts').commandToExecute]"
+        }
+      }
+    }
+  ]
+}
