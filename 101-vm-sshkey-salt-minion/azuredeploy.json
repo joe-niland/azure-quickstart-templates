@@ -84,9 +84,6 @@
         "dnsLabelPrefix": {
           "value": "[parameters('dnsLabelPrefix')]"
         },
-        "saltVersion": {
-          "value": "[parameters('saltVersion')]"
-        },
         "sshKeyData": {
           "value": "[parameters('sshKeyData')]"
         },
