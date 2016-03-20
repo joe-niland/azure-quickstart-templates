@@ -82,7 +82,7 @@
   {
     "apiVersion": "[variables('apiVersion')]",
     "type": "Microsoft.Compute/virtualMachines/extensions",
-    "name": "[concat(parameters('vmName'), copyindex(), '/configureAppVM')]",
+    "name": "[concat(parameters('vmName'), '/configureAppVM')]",
     "location": "[variables('location')]",
     "dependsOn": [
       "[concat(parameters('vmName'), '/createVM')]"
