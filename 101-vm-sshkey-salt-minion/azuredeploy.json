@@ -53,13 +53,13 @@
     }
   },
   "variables": {
-    "scriptsBaseUrl": "https://raw.githubusercontent.com/joe-niland/azure-quickstart-templates/master/101-vm-sshkey-salt-minion/",
+    "scriptsBaseUrl": "https://raw.githubusercontent.com/joe-niland/azure-quickstart-templates/vm-sshkey-salt-minion/101-vm-sshkey-salt-minion/",
     "apiVersion": "2016-02-01",
     "apiVersion_Aus": "2016-03-30",
     "location": "[resourceGroup().location]",
     "appVMScripts": {
       "fileUris": [
-        "[concat(variables('scriptsBaseUrl'), 'salt-install.sh')]"
+        "[concat(variables('scriptsBaseUrl'), 'install-salt.sh')]"
       ],
       "commandToExecute": "sudo bash salt-install.sh"
     }
