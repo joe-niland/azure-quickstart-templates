@@ -54,7 +54,7 @@
   },
   "variables": {
     "scriptsBaseUrl": "https://raw.githubusercontent.com/joe-niland/azure-quickstart-templates/master/101-vm-sshkey-salt-minion/",
-    "apiVersion": "2015-06-15",
+    "apiVersion": "2016-02-01",
     "location": "[resourceGroup().location]",
     "appVMScripts": {
       "fileUris": [
