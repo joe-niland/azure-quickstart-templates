@@ -65,7 +65,7 @@
   },
   "resources": [{
     "apiVersion": "[variables('apiVersion')]",
-    "name": "[concat(parameters('vmName'), '/createVM')]",
+    "name": "[parameters('vmName')]",
     "type": "Microsoft.Resources/deployments",
     "properties": {
       "mode": "incremental",
